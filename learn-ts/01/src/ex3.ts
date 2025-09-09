@@ -16,10 +16,7 @@
       };
       tags: string[];
     };
-    reviews: [
-      { user: "Alice"; rating: 4.5; comment: "Excellent!" },
-      { user: "Bob"; rating: 3.0; comment: "Decent product." }
-    ];
+    reviews: { user: string; rating: number; comment: string }[];
   } = {
     id: 1,
     name: "Product A",
@@ -39,10 +36,11 @@
   };
 
   // 2. *
-  let dataset: [
-    { id: number; value: string },
-    { id: number; value: string }
-  ][] = [
+  let dataset: //[
+  //   { id: number; value: string },
+  //   { id: number; value: string }
+  // ][]
+  { id: number; value: string }[][] = [
     [
       { id: 1, value: "a" },
       { id: 2, value: "b" },
