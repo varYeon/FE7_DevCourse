@@ -29,7 +29,7 @@
   // ㄴ 따라서 얘네는 직접 타입 명시를 해주는 편이 좋다
 
   // 3.
-  // 리터널 타입 (literal type)
+  // 리터럴 타입 (literal type)
   // 타입을 값으로 지정하는 방식
   const str4 = "hello"; // 타입이 'hello', let과 달리 재할당이 안 되기 때문에 자동으로 리터럴 타입 추론
   let str5 = "hello"; // string 타입

@@ -54,7 +54,7 @@
     grades: number[];
   };
 
-  function calculateAverageGrade(student: Student): number {}
+  //function calculateAverageGrade(student: Student): number {}
 }
 
 {

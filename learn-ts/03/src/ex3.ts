@@ -21,18 +21,18 @@
   interface Car {
     brand: string;
     model: string;
-    start(): void;
+    start(speed: number): void;
   }
 
   const car: Car = {
     brand: "kia",
     model: "K8",
-    start: function () {
-      console.log(`${car.brand}의 ${car.model}입니다`);
+    start: function (speed) {
+      console.log(`${this.brand}의 ${this.model}입니다. speed: ${speed}`);
     },
   };
 
-  car.start();
+  car.start(100);
 }
 
 {
@@ -69,19 +69,18 @@
     age: number;
   }
   interface Dog extends Animal {
-    breed: number;
+    breed: string;
   }
 
   const dog: Dog = {
     name: "Rick",
     age: 5,
-    breed: 3,
+    breed: "chihuahua",
   };
 }
 
 {
   // 6. 인터페이스에서 메소드 정의 *
-  // 2번과 다른건가?
   interface Person {
     name: string;
     age: number;
@@ -90,8 +89,9 @@
   const person: Person = {
     name: "sy",
     age: 25,
-    greet: function () {
-      console.log(`Hello, my name id ${person.name}`);
+    greet: function (this: Person) {
+      // this: Person 생략 가능, 잘 안 쓰는 문법
+      console.log(`Hello, my name is ${this.name}`);
     },
   };
 }
@@ -112,11 +112,20 @@
   const circle: Circle = {
     radius: 5,
     area: function () {
-      return circle.radius * circle.radius * Math.PI;
+      return this.radius * this.radius * Math.PI;
+    },
+  };
+
+  const rectangle: Rectangle = {
+    width: 5,
+    height: 10,
+    area: function () {
+      return this.width * this.height;
     },
   };
 
   console.log(circle.area());
+  console.log(rectangle.area());
 }
 
 {
@@ -132,7 +141,8 @@
     zipcode: number;
   }
 
-  type PersonalAddress = Person & Address;
+  //type PersonalAddress = Person & Address;
+  interface PersonalAddress extends Person, Address {}
 
   const personAddress: PersonalAddress = {
     name: "sy",
@@ -156,5 +166,10 @@
 
 {
   // 10. **
-  interface Operation {}
+  interface Operation {
+    (a: number, b: number): number;
+  }
+
+  const add: Operation = (a, b) => a + b;
+  const subtract: Operation = (a, b) => a - b;
 }
