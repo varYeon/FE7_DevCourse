@@ -20,13 +20,22 @@
 }
 
 {
-  // 2. void * (다시)
+  // 2. void *
   const greet = function (name: string): string {
     return `Hello, ${name}`;
   };
 
   const greeting = greet("Alice");
   console.log(greeting); // "Hello, Alice!"
+}
+{
+  // 2. 다시
+  const greet = function (name: string): void {
+    console.log(`Hello, ${name}`);
+  };
+
+  const greeting = greet("Alice");
+  //console.log(greeting); // "Hello, Alice!"
 }
 
 {
@@ -40,10 +49,7 @@
 }
 
 {
-  // 4.  기본값 * (옵셔널 파라미터 쓰는게 아닌감..?)
-  // const sum = function (a: number, b?: number): number {
-  //   return a + (b || 0);
-  // };
+  // 4.  기본값 *
   const sum = function (a: number, b = 0): number {
     return a + b;
   };
