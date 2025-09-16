@@ -1,0 +1,13 @@
+.nanum-myeongjo-regular {
+  font-family: "Nanum Myeongjo", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "doldam"; /* 사용할 폰트 이름 정의 */
+  src: url(../assets/fonts/doldam.woff), url(../assets/fonts/doldam.woff2); /* 폰트 파일의 위치 */
+} /* 먼저 있는 url이 적용, 먼저 있는거 찾고 나중에 있는거 찾음 */
+
+.doldam {
+  font-family: "doldam";
+}
