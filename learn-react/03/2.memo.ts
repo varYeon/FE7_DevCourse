@@ -25,3 +25,8 @@
 // 1.4.2.3.2 설치, npm install @vanilla-extract/css
 // 빌드도구에 맞는 추가 설정, npm install --save-dev @vanilla-extract/vite-plugin
 // 1.4.2.3.2 별도의 ts 등의 파일에 css 만듦 style.css.ts
+
+// 참고
+// npm run build
+// npm run preview
+// 4173 링크 -> 빌드 된 버전
