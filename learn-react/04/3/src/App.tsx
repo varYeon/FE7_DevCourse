@@ -29,8 +29,10 @@ export default function App() {
   const isLogin = false;
   return (
     <>
+      {!isLogin && <h1>LogIn</h1>}
       {/* {isLogin && <LogIn />} */}
-      {idLogin && (
+
+      {isLogin && (
         <>
           <h1>로그인 성공</h1>
           <h2>축하합니다</h2>
