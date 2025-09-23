@@ -7,18 +7,20 @@
 </head>
 <body>
 
-<ul id="itemList">
-    <li>항목 1</li>
-    <li>항목 2</li>
-    <li>항목 3</li>
-</ul>
+
+<input type="password" id="passwordInput">
+<input type="checkbox" id="showPassword"> 비밀번호 보기
 <script>
-  // 클릭, 삭제
-  document.querySelector("li").addEventListener("click", function(){
-    document.querySelector("li").remove("li");
-  })
-  // 눌러진 그 리스트를 삭제해야 됨
+  const show = document.querySelector("#showPassword");
+  show.addEventListener("click", function(){
+    // 패스워드의 타입 속성을 변경해야 함
+    show.setAttribute("type", "text");
+  });
+
 </script>
+
+
+
 
 
 

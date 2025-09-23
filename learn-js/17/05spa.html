@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>SPA Example</title>
+    <style>
+      .nav {
+        margin-bottom: 20px;
+      }
+      .nav a {
+        margin-right: 10px;
+        cursor: pointer;
+        color: blue;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>SPA 예제</h1>
+    <div class="nav">
+      <a href="/" data-page="home">Home</a>
+      <a href="/about" data-page="about">About</a>
+      <a href="/contact" data-page="contact">Contact</a>
+    </div>
+    <div id="content">홈 페이지 내용이 여기에 표시됩니다.</div>
+
+    <script>
+      // 페이지 컨텐츠 데이터
+      const pages = {
+        home: '홈 페이지 내용입니다.',
+        about: '소개 페이지 내용입니다.',
+        contact: '연락처 페이지 내용입니다.',
+      };
+
+      // 페이지 이동 함수
+      function navigateTo(page) {
+        // 브라우저 URL을 변경 (pushState)
+        history.pushState({ page }, '', `/${page}`);
+        loadContent(page);
+      }
+
+      // 페이지 콘텐츠 로드
+      function loadContent(page) {
+        const contentDiv = document.getElementById('content');
+        contentDiv.textContent =
+          pages[page] || '404 - 페이지를 찾을 수 없습니다.';
+      }
+
+      // 링크 클릭 이벤트 설정
+      document.querySelectorAll('.nav a').forEach((link) => {
+        link.addEventListener('click', (event) => {
+          event.preventDefault(); // 기본 동작 방지
+          const page = event.target.getAttribute('data-page');
+          navigateTo(page);
+        });
+      });
+
+      // popstate 이벤트: 뒤로/앞으로 버튼을 눌렀을 때 처리
+      window.addEventListener('popstate', (event) => {
+        const page = event.state?.page || 'home';
+        loadContent(page);
+      });
+
+      // 초기 페이지 로드
+      const initialPage = window.location.pathname.replace('/', '') || 'home';
+      loadContent(initialPage);
+    </script>
+  </body>
+</html>

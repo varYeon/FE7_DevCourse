@@ -28,3 +28,11 @@
   type A = IsString<string>; // "Yes"
   type B = IsString<number>; // "No"
 }
+{
+  type MyType = "a" | "b" | "c";
+  type Result = Exclude<MyType, "b">; // "a" | "c"
+  // 왜 이런 결과가 나왔냐면
+}
+{
+  
+}

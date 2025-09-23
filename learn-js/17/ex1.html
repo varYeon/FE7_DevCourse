@@ -1,24 +1,48 @@
 <!-- 23. 이벤트
-* DOM 연습문제 :: 노션으로 정답 확인하기 -->
+* DOM 연습문제 :: 노션으로 정답 확인하기 
+아직 정답 확인 못 함!
 
-<!-- 1. 버튼 클릭 시 텍스트 변경 **
+// 문서객체의 선택은 변수에 담아두는 방식이 편할 수도 있겠음 -->
+
+
+<!-- 1. 버튼 클릭 시 텍스트 변경 
 버튼을 클릭하면 특정 `<p>` 태그의 텍스트를 변경합니다. -->
 
 <p id="text">원래 텍스트</p>
 <button id="changeTextButton">텍스트 변경</button>
 <script>
-  document.querySelector("#text").addEventListener("click", function (){
+  const buttonTxt = document.querySelector("#text")
+  document.querySelector("#changeTextButton")
+  .addEventListener("click", function (){
+    // addEventListener 앞에 querySelector가 없어도 실행이 되는가?
+    // ㄴ 없다는건 문서 전체를 의미하는 것, 버튼을 새로 하나 더 만들어보면 그 버튼을 통해서도 실행이 된다
+    // ㄴ 즉, 의도 대로 '그' 버튼을 통해서 실행 되는 것이 아니니 구체적인 접근 필요
     // 텍스트 변경
+    buttonTxt.innerText = "바뀐 텍스트";
   });
 </script>
 
 
-<!-- 2. 배경색 변경 *
+<!-- 2. 배경색 변경 
 버튼을 클릭하면 페이지의 배경색을 랜덤 색상으로 변경합니다. 
 (랜덤 색상은 ‘#’+Math.floor(Math.random()*16777215).toString(16)) 로직을 쓰세요. -->
 
 <button id="changeColorButton">배경색 변경</button>
 <script>
+  // 한 번 밖에 안 됨
+  /*
+  const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+
+  document.querySelector("#changeColorButton").addEventListener("click", function (){
+    document.body.style.backgroundColor = randomColor;
+    // body를 생략하면 왜 안 될까? 어짜피 문서 전체 아닌가
+    // ㄴ document에는 style 속성이 없기 때문임, body가 갖는거임
+  })
+    */
+
+  // 계속 가능
+  // randomColor 변수 선언이 함수 안으로 들어감 -> 따라서 랜덤색이 변수 안으로 들어가는 일 자체가 클릭이 일어날 때마다
+  // 계속 발생하는 것이므로 버튼을 누를 때마다 색이 계속 바뀌어서 적용되는 거임 / 함수 밖에서 색의 값을 미리 배정 받고 들어가는 위와는 다름
   document.querySelector("#changeColorButton").addEventListener("click", function () {
     const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
     document.querySelector("body").style.backgroundColor = randomColor;
@@ -26,29 +50,32 @@
 </script>
 
 
-<!-- 3. 리스트 항목 추가 **
+<!-- 3. 리스트 항목 추가 ** 
 입력창에서 텍스트를 받아 새로운 리스트 항목을 추가합니다. -->
+
 
 <input type="text" id="itemInput" placeholder="새 항목 입력">
 <button id="addItemButton">항목 추가</button>
 <ul id="itemList"></ul>
 
 <script>
-  // 텍스트를 받고 / 리스트를 추가 -> 받은 텍스트를 리스트에 연결 -> 어떻게?
-  const inputText = document.querySelector("input.text"); 
-  // 버튼을 누를 때 함수가 실행
-  document.querySelector("#addItemButton").addEventListener("click", function (text) {
-    const newLi = document.createElement("li");
-    newLi.innerText = inputText; // addEventListener 어디서 가져올거지?? 변수에 담아야 가져오지
+  
+  
+  document.querySelector("#addItemButton").addEventListener("click", function (){
+    const inputText = document.querySelector("#itemInput").value; 
+    const newList = document.createElement("li");
+    document.querySelector("#itemList").appendChild(newList);
+    newList.innerText = inputText;
+    // inputText에 입력한 텍스트가 안 들어간 것 같음, 객체가 들어간? 접근이 들어간..?
+    // 텍스트를 넣으려면 어떻게 해야 하지?? -> 매 번 받아야 하므로 함수 안에 넣어야 함
+    // .value 속성을 사용 !
 
-    document.querySelector("#itemList").appendChild(newLi);
-    //빈 리스트 생성됨 : inputText 문제라고 생각
   })
 
 </script>
 
 
-<!-- 4. 특정 항목 삭제 **
+<!-- 4. 특정 항목 삭제 *
 리스트의 특정 항목을 클릭하면 그 항목을 삭제합니다. -->
 
 <ul id="itemList">
@@ -57,10 +84,116 @@
     <li>항목 3</li>
 </ul>
 <script>
-  // 클릭, 삭제
-  document.querySelector("li").addEventListener("click", function(){
-    document.querySelector("li").remove("li");
+  // 1. 첫번째 것만 적용
+  // 각각의 li에 id를 부여한다 -> 각각 이벤트를 생성해야 함
+  // 위임 방식 사용 -> 하위요소에 각각 등록하지 않고, 공통 상위 요소에 한 번만 등록한 뒤 버블링으로 실제 발생 대상을 판별
+  // document.querySelector("li").addEventListener("click", function(){
+  //   document.querySelector("li").remove();
+  // })
+
+  // 2. 3을 눌러도 1이 삭제 됨
+  // document.querySelector("#itemList").addEventListener("click", function(){
+  //  document.querySelector("li").remove(); // 얘가 문젠가...
+  //  })
+
+  // 3. .target 속성 사용 -> 이벤트가 실제로 잘생한 요소를 가리킴
+  document.querySelector("#itemList").addEventListener("click", function(e){
+   e.target.remove(); 
+   })
+  
+</script>
+
+
+<!-- 5. 이미지 변경 *
+버튼을 클릭하면 이미지의 소스를 변경합니다. -->
+
+<img id="image" src="image1.jpg" alt="이미지">
+<button id="changeImageButton">이미지 변경</button>
+<script>
+  // setAttribute로 src를 변경
+  document.querySelector("#changeImageButton").addEventListener("click", function(){
+    document.querySelector("#image").setAttribute("src", "https://img.freepik.com/premium-vector/default-profile-picture-ui-element-template_106317-36159.jpg");
+    //document.querySelector("#image").src = "주소"; (가능)
   })
-  // 눌러진 그 리스트를 삭제해야 됨
-  // 첫 번째거 하나만 삭제됨
+</script>
+
+
+(기억)
+
+<!-- 6. 모달 열기/닫기 ** 
+버튼을 클릭하면 모달을 열고, 모달 안의 버튼을 클릭하면 모달을 닫습니다. -->
+
+<button id="openModalButton">모달 열기</button>
+<div id="modal" style="display:none;">
+    <div>모달 내용</div>
+    <button id="closeModalButton">닫기</button>
+</div>
+<script>
+  document.querySelector("#openModalButton").addEventListener("click",function(){
+    // 버튼을 누르면 div를 보여준다...., div안의 버튼을 누르면 사라진다... (추가, 제거와는 다른건가)
+    // 스타일 속성 변경
+    document.querySelector("#modal").style.display = "block"; // 이 부분은 어떻게 기능
+    // none 한 기능을 보여주게 만들기 위해서 사용
+  })
+    document.querySelector("#closeModalButton").addEventListener("click",function(){
+    document.querySelector("#modal").style.display = "none";
+  })
+
+</script>
+
+
+<!-- 7. 폼 제출 시 경고 메시지 ***
+폼을 제출하면 이름을 포함한 경고 메시지를 표시합니다. -->
+
+ <form id="myForm">
+    <input type="text" name="name" placeholder="이름 입력" />
+    <button type="submit">제출</button>
+ </form>
+ <script>
+  document.querySelector("#myForm").addEventListener("submit", function(){
+    // 보면 '제출 버튼을 누르면' 이벤트 발생이 아니라, '폼을 제출하면' 이벤트 발생
+    const myName = document.querySelector('input[name="name"]').value;
+    // 3번 처럼 입력받은 텍스트를 변수에 저장 : 3번은 ("id").value, 얘는 id 없어서 접근이 좀 다름
+    window.alert(`폼이 제출되었습니다! 입력한 이름 ${myName}`);
+  });
+ </script>
+
+
+<!-- 8. 비밀번호 표시/숨기기 *** (ㅠ)
+체크박스를 클릭하면 비밀번호 입력 필드의 내용을 표시하거나 숨깁니다. -->
+
+<input type="password" id="passwordInput">
+<input type="checkbox" id="showPassword"> 비밀번호 보기
+<script>
+  const show = document.querySelector("#showPassword");
+  show.addEventListener("click", function(){
+    // 패스워드의 타입 속성을 변경해야 함 -> 어떻게? ㅠㅠ
+    show.setAttribute("type", "text");
+  });
+
+</script>
+
+
+****
+<!-- 9. 애니메이션 효과 주기
+버튼 클릭 시 요소의 크기를 애니메이션으로 변경합니다. -->
+
+<div id="box" style="width: 100px; height: 100px; background: red;"></div>
+<button id="animateButton">애니메이션 시작</button>
+<script>
+
+</script>
+
+
+<!-- 10. 탭 전환 구현
+여러 탭 중 하나를 클릭하면 해당 탭의 내용만 표시합니다. -->
+
+<div>
+    <button class="tab" data-target="tab1">탭 1</button>
+    <button class="tab" data-target="tab2">탭 2</button>
+</div>
+<div id="tab1" class="tab-content" style="display:none;">탭 1 내용</div>
+<div id="tab2" class="tab-content" style="display:none;">탭 2 내용</div>
+<script>
+
 </script>
