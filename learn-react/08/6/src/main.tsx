@@ -13,6 +13,7 @@ import { store } from "./store/store.ts";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={store}>
+      {/* 정의한 redux store를 공급 */}
       <App />
     </Provider>
   </StrictMode>
